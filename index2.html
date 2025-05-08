@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Tech Summit 2024 | Konferencja Technologiczna</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2a2a72;
+            --accent-color: #ff9f43;
+            --dark-bg: #1a1a1a;
+            --light-text: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            overflow-x: hidden;
+        }
+
+        /* Header Section */
+        .header {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .header-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -1;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 1;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .event-date {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: var(--accent-color);
+            color: var(--light-text);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            background-color: transparent;
+            border-color: var(--accent-color);
+        }
+
+        /* Main Content Sections */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: var(--accent-color);
+            margin: 1rem auto;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-video {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .features-list {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .features-list li {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            cursor: pointer;
+            aspect-ratio: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Speakers Section */
+        .speakers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .speaker-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+        }
+
+        .speaker-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 4px solid var(--accent-color);
+        }
+
+        /* Registration Form */
+        .registration-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 2px solid rgba(255,255,255,0.1);
+            background: transparent;
+            color: var(--light-text);
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .map-container {
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        .social-links {
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            color: var(--light-text);
+            margin: 0 1rem;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .event-date {
+                font-size: 1.5rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 3rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <iframe class="header-video" width="741" height="417" src="https://www.youtube.com/embed/SVaECrWjnQs" title="24 BEST Things I saw in Vegas at CES 2024!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+        <div class="hero-content">
+            <h1>Future Tech Summit 2024</h1>
+            <p class="event-date">15-17 Listopada | Warszawa</p>
+            <a href="#registration" class="cta-button">Zarejestruj się teraz</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="section">
+            <h2 class="section-title">O Wydarzeniu</h2>
+            <div class="about-content">
+                <div>
+                    <p class="description">Największa konferencja technologiczna w Europie Środkowej, łącząca wizjonerów, innowatorów i liderów przemysłu.</p>
+                    <ul class="features-list">
+                        <li><i class="fas fa-brain"></i> Warsztaty AI i Machine Learning</li>
+                        <li><i class="fas fa-robot"></i> Pokazy robotyki i automatyzacji</li>
+                        <li><i class="fas fa-vr-cardboard"></i> Strefa VR i rozszerzonej rzeczywistości</li>
+                        <li><i class="fas fa-network-wired"></i> Sesje networkingowe</li>
+                    </ul>
+                </div>
+                <iframe class="about-video" width="560" height="315" src="https://www.youtube.com/embed/SVaECrWjnQs" title="O Wydarzeniu" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Galeria</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://cdn.prod.website-files.com/6331e19fdfcbe01f4c12b610/66baffd5ee7f9fa6efed4473_640f82ab5d300300a891d92a_viva.jpeg" alt="Tech Conference">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://cdn.prod.website-files.com/6284b6718db6e6a221b3f55a/62ea33c5c69f445885ff9e68_what-is-a-workshop.jpg" alt="Workshop">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://imageio.forbes.com/specials-images/dam/imageserve/1135040422/960x0.jpg?height=474&width=711&fit=bounds" alt="Networking">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://www.museumnext.com/wp-content/uploads/2017/06/Designing-an-Exhibition-1.jpg" alt="Exhibition">
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Prelegenci</h2>
+            <div class="speakers-grid">
+                <div class="speaker-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2CmkkP6PVRZM4LTNoIExkJf0IDvyXfYR5vg&s" class="speaker-image" alt="Speaker 1">
+                    <h3>Anna Smith</h3>
+                    <p>Dyrektor ds. Innowacji, TechCorp</p>
+                </div>
+                <div class="speaker-card">
+                    <img src="https://memi.klev.club/uploads/posts/2024-04/memi-klev-club-nz1j-p-memi-negr-v-furazhke-4.jpg" class="speaker-image" alt="Speaker 2">
+                    <h3>John Smith</h3>
+                    <p>Założyciel FutureTech</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="registration">
+            <h2 class="section-title">Rejestracja</h2>
+            <div class="registration-form">
+                <form id="registrationForm">
+                    <div class="form-group">
+                        <input type="text" placeholder="Imię i nazwisko" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Adres email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" placeholder="Numer telefonu" required>
+                    </div>
+                    <button type="submit" class="cta-button">Wyślij zgłoszenie</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="contact-info">
+            <div>
+                <h4>Kontakt</h4>
+                <p><i class="fas fa-envelope"></i> kontakt@techsummit.pl</p>
+                <p><i class="fas fa-phone"></i> +48 123 456 789</p>
+            </div>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2443.325170269183!2d21.01221531579705!3d52.23290117976128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471ecc669a869b01%3A0x42f3517ef1d96104!2sPalace%20of%20Culture%20and%20Science!5e0!3m2!1sen!2spl!4v1624449876781!5m2!1sen!2spl" 
+                        style="border:0;" allowfullscreen loading="lazy"></iframe>
+            </div>
+        </div>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+    </footer>
+
+    <div class="lightbox">
+        <img class="lightbox-img" src="" alt="Lightbox">
+    </div>
+
+    <script>
+        // Lightbox functionality
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const lightbox = document.querySelector('.lightbox');
+        const lightboxImg = document.querySelector('.lightbox-img');
+
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const imgSrc = item.querySelector('img').src;
+                lightboxImg.src = imgSrc;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target !== lightboxImg) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Form submission
+        document.getElementById('registrationForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Dziękujemy za zgłoszenie! Skontaktujemy się wkrótce.');
+            e.target.reset();
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Video controls
+        const aboutVideo = document.querySelector('.about-video');
+        aboutVideo.addEventListener('mouseenter', () => aboutVideo.controls = true);
+        aboutVideo.addEventListener('mouseleave', () => aboutVideo.controls = false);
+    </script>
+</body>
+</html>
