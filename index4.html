@@ -1,0 +1,232 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechNova Solutions</title>
+    <style>
+        :root {
+            --bg-color: #f5f5f5;
+            --text-color: #333333;
+            --primary-color: #007bff;
+            --card-bg: #ffffff;
+        }
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #ffffff;
+            --primary-color: #66b0ff;
+            --card-bg: #2a2a2a;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+        header {
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--card-bg);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        nav a {
+            margin: 0 1rem;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .hero, .services, .calculator, .contact {
+            padding: 2rem;
+            text-align: center;
+        }
+        .hero {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .services .service-card {
+            background-color: var(--card-bg);
+            padding: 1rem;
+            margin: 1rem;
+            border-radius: 8px;
+            display: inline-block;
+            width: 20%;
+            vertical-align: top;
+        }
+        .calculator, .contact {
+            background-color: var(--card-bg);
+            margin: 2rem auto;
+            max-width: 600px;
+            border-radius: 8px;
+            padding: 2rem;
+        }
+        input, textarea, button {
+            display: block;
+            width: 100%;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        #theme-toggle {
+            background: none;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            .services .service-card {
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>TechNova Solutions</div>
+        <nav>
+            <a href="#hero">Home</a>
+            <a href="#services">Services</a>
+            <a href="#calculator">Calculator</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <button id="theme-toggle">Toggle Theme</button>
+    </header>
+
+    <section id="hero" class="hero">
+        <h1>TechNova Solutions</h1>
+        <p>IT Outsourcing and Solutions for Small Businesses</p>
+        <button onclick="document.getElementById('contact').scrollIntoView()">Contact Us</button>
+    </section>
+
+    <section id="services" class="services">
+        <h2>Our Services</h2>
+        <div class="service-card">
+            <h3>IT Outsourcing</h3>
+            <p>Delegate IT tasks to professionals.</p>
+        </div>
+        <div class="service-card">
+            <h3>Solution Development</h3>
+            <p>Custom SaaS products for your business.</p>
+        </div>
+        <div class="service-card">
+            <h3>Consulting</h3>
+            <p>Expert support for process optimization.</p>
+        </div>
+    </section>
+
+    <section id="calculator" class="calculator">
+        <h2>Pricing Calculator</h2>
+        <label>Number of Users:</label>
+        <input type="number" id="users" min="1" value="1">
+        <label>Data Volume (GB):</label>
+        <input type="number" id="data" min="1" value="1">
+        <label>Additional Options:</label>
+        <input type="checkbox" id="support" value="support"> Premium Support (+$20)
+        <p>Estimated Cost: <span id="total">0 USD</span></p>
+    </section>
+
+    <section id="contact" class="contact">
+        <h2>Contact Us</h2>
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <textarea id="message" placeholder="Message" required></textarea>
+        <button onclick="validateForm()">Send</button>
+    </section>
+
+    <script>
+        // Theme Toggle
+        const toggleButton = document.getElementById('theme-toggle');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+        
+        toggleButton.addEventListener('click', () => {
+            const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Calculator Logic
+        function calculateTotal() {
+            const users = parseInt(document.getElementById('users').value) || 0;
+            const data = parseInt(document.getElementById('data').value) || 0;
+            const support = document.getElementById('support').checked;
+            let total = (users * 5) + (data * 2);
+            if (support) total += 20;
+            document.getElementById('total').textContent = `${total} USD`;
+        }
+        document.getElementById('users').addEventListener('input', calculateTotal);
+        document.getElementById('data').addEventListener('input', calculateTotal);
+        document.getElementById('support').addEventListener('change', calculateTotal);
+        calculateTotal();
+
+        // Form Validation
+        function validateForm() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            if (name && email && message) {
+                if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+                    alert('Data sent!');
+                } else {
+                    alert('Enter a valid email!');
+                }
+            } else {
+                alert('Fill in all fields!');
+            }
+        }
+    </script>
+</body>
+</html>

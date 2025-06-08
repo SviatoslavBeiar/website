@@ -1,454 +1,1062 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Future Tech Summit 2024 | Konferencja Technologiczna</title>
+    <title>Eduland Academy | Online Learning Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Slab:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #2a2a72;
-            --accent-color: #ff9f43;
-            --dark-bg: #1a1a1a;
-            --light-text: #ffffff;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
-            background-color: var(--dark-bg);
-            color: var(--light-text);
-            overflow-x: hidden;
+        :root {
+            --primary: #4a6bff;
+            --primary-dark: #3a56d1;
+            --secondary: #ff6b6b;
+            --accent: #42b883;
+            --text: #333;
+            --light: #f8f9fa;
+            --gray: #e0e0e0;
+            --dark-bg: #2c3e50;
+            --card-bg: #ffffff;
         }
 
-        /* Header Section */
-        .header {
-            position: relative;
-            height: 100vh;
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7ff;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
             display: flex;
             align-items: center;
-            justify-content: center;
-            overflow: hidden;
+            gap: 10px;
         }
 
-        .header-video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            min-width: 100%;
-            min-height: 100%;
-            z-index: -1;
+        .logo i {
+            font-size: 2.5rem;
+        }
+
+        .logo h1 {
+            font-family: 'Roboto Slab', serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 5px;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            border-bottom: 2px solid var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1497636577773-f1231844b336?ixlib=rb-4.0.3') center/cover;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
         }
 
         .hero-content {
-            text-align: center;
-            z-index: 1;
-            padding: 2rem;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            backdrop-filter: blur(5px);
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .event-date {
-            font-size: 2rem;
-            color: var(--accent-color);
-            margin-bottom: 2rem;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background-color: var(--accent-color);
-            color: var(--light-text);
-            text-decoration: none;
-            border-radius: 30px;
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
             font-weight: 700;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
         }
 
-        .cta-button:hover {
-            transform: scale(1.05);
-            background-color: transparent;
-            border-color: var(--accent-color);
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
         }
 
         /* Main Content Sections */
         .section {
-            padding: 5rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
+            padding: 80px 0;
         }
 
         .section-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
             text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: var(--primary);
             position: relative;
+            font-weight: 700;
         }
 
         .section-title::after {
             content: '';
-            display: block;
-            width: 100px;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
             height: 4px;
-            background: var(--accent-color);
-            margin: 1rem auto;
+            background-color: var(--accent);
+            border-radius: 2px;
         }
 
-        /* About Section */
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-
-        .about-video {
-            width: 100%;
+        /* Quiz Section */
+        .quiz-container {
+            background-color: var(--card-bg);
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .features-list {
-            list-style: none;
-            margin-top: 2rem;
-        }
-
-        .features-list li {
-            margin-bottom: 1rem;
-            padding: 1rem;
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        /* Gallery Section */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1rem;
-            max-width: 1200px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 40px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
-        .gallery-item {
-            position: relative;
-            overflow: hidden;
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .question-counter {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .score-display {
+            background-color: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .question {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .option {
+            background-color: var(--light);
+            padding: 15px;
             border-radius: 10px;
             cursor: pointer;
-            aspect-ratio: 1;
-            transition: transform 0.3s ease;
+            transition: all 0.3s;
+            border: 2px solid transparent;
         }
 
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
+        .option:hover {
+            background-color: #e6f7ff;
+            border-color: var(--primary);
         }
 
-        .gallery-item:hover img {
-            transform: scale(1.1);
+        .option.selected {
+            background-color: #e6f7ff;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.2);
         }
 
-        /* Speakers Section */
-        .speakers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
         }
 
-        .speaker-card {
+        #result {
             text-align: center;
-            padding: 2rem;
-            background: rgba(255,255,255,0.05);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 30px;
+            color: var(--accent);
+            display: none;
+        }
+
+        /* Course Progress Section */
+        .course-container {
+            background-color: var(--card-bg);
             border-radius: 15px;
-        }
-
-        .speaker-image {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 1rem;
-            border: 4px solid var(--accent-color);
-        }
-
-        /* Registration Form */
-        .registration-form {
-            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 40px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
         }
 
-        .form-group input {
-            width: 100%;
-            padding: 1rem;
-            border-radius: 8px;
-            border: 2px solid rgba(255,255,255,0.1);
+        .course-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .progress-container {
+            margin-bottom: 40px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background-color: var(--gray);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #4ad9c3);
+            border-radius: 10px;
+            width: 65%;
+            transition: width 1s ease;
+        }
+
+        .modules {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .module {
+            display: flex;
+            align-items: center;
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .module.completed {
+            background-color: #e8faf1;
+        }
+
+        .module.completed .module-check {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .module-check {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .module-content {
+            flex: 1;
+        }
+
+        .module-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .module-duration {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Schedule Section */
+        .schedule-container {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .schedule-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .week-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .week-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .schedule-view {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-btn {
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 1px solid var(--gray);
             background: transparent;
-            color: var(--light-text);
-            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .view-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .schedule {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+        }
+
+        .day {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 15px;
+            min-height: 200px;
+        }
+
+        .day-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary);
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--gray);
+        }
+
+        .lesson {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .lesson-time {
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .lesson-title {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .mobile-schedule {
+            display: none;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .mobile-day {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 15px;
         }
 
         /* Footer */
         footer {
-            background: #000;
-            padding: 3rem 2rem;
-            text-align: center;
+            background-color: var(--dark-bg);
+            color: white;
+            padding: 60px 0 20px;
         }
 
-        .contact-info {
+        .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
+            gap: 40px;
+            margin-bottom: 40px;
         }
 
-        .map-container {
-            height: 300px;
-            border-radius: 15px;
-            overflow: hidden;
-            margin-top: 2rem;
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--accent);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--accent);
         }
 
         .social-links {
-            margin-top: 2rem;
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
         }
 
         .social-links a {
-            color: var(--light-text);
-            margin: 0 1rem;
-            font-size: 1.5rem;
-            transition: color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            color: white;
+            transition: background-color 0.3s;
         }
 
         .social-links a:hover {
-            color: var(--accent-color);
+            background-color: var(--accent);
         }
 
-        /* Lightbox */
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            color: #bdbdbd;
         }
 
-        .lightbox.active {
-            display: flex;
-        }
-
-        .lightbox-img {
-            max-width: 90%;
-            max-height: 90%;
-            border-radius: 10px;
-        }
-
+        /* Responsive Design */
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
             }
             
-            .event-date {
-                font-size: 1.5rem;
+            nav ul {
+                gap: 15px;
             }
-
-            .about-content {
-                grid-template-columns: 1fr;
+            
+            .hero h2 {
+                font-size: 2.2rem;
             }
-
+            
             .section {
-                padding: 3rem 1rem;
+                padding: 50px 0;
+            }
+            
+            .schedule {
+                display: none;
+            }
+            
+            .mobile-schedule {
+                display: grid;
+            }
+            
+            .quiz-container, .course-container, .schedule-container {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .quiz-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+                text-align: center;
             }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <iframe class="header-video" width="741" height="417" src="https://www.youtube.com/embed/SVaECrWjnQs" title="24 BEST Things I saw in Vegas at CES 2024!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
-        <div class="hero-content">
-            <h1>Future Tech Summit 2024</h1>
-            <p class="event-date">15-17 Listopada | Warszawa</p>
-            <a href="#registration" class="cta-button">Zarejestruj się teraz</a>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>Eduland <span>Academy</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">Courses</a></li>
+                    <li><a href="#">Schedule</a></li>
+                    <li><a href="#">Resources</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
-    <main>
-        <section class="section">
-            <h2 class="section-title">O Wydarzeniu</h2>
-            <div class="about-content">
-                <div>
-                    <p class="description">Największa konferencja technologiczna w Europie Środkowej, łącząca wizjonerów, innowatorów i liderów przemysłu.</p>
-                    <ul class="features-list">
-                        <li><i class="fas fa-brain"></i> Warsztaty AI i Machine Learning</li>
-                        <li><i class="fas fa-robot"></i> Pokazy robotyki i automatyzacji</li>
-                        <li><i class="fas fa-vr-cardboard"></i> Strefa VR i rozszerzonej rzeczywistości</li>
-                        <li><i class="fas fa-network-wired"></i> Sesje networkingowe</li>
-                    </ul>
-                </div>
-                <iframe class="about-video" width="560" height="315" src="https://www.youtube.com/embed/SVaECrWjnQs" title="O Wydarzeniu" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2 class="section-title">Galeria</h2>
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="https://cdn.prod.website-files.com/6331e19fdfcbe01f4c12b610/66baffd5ee7f9fa6efed4473_640f82ab5d300300a891d92a_viva.jpeg" alt="Tech Conference">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://cdn.prod.website-files.com/6284b6718db6e6a221b3f55a/62ea33c5c69f445885ff9e68_what-is-a-workshop.jpg" alt="Workshop">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://imageio.forbes.com/specials-images/dam/imageserve/1135040422/960x0.jpg?height=474&width=711&fit=bounds" alt="Networking">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://www.museumnext.com/wp-content/uploads/2017/06/Designing-an-Exhibition-1.jpg" alt="Exhibition">
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2 class="section-title">Prelegenci</h2>
-            <div class="speakers-grid">
-                <div class="speaker-card">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2CmkkP6PVRZM4LTNoIExkJf0IDvyXfYR5vg&s" class="speaker-image" alt="Speaker 1">
-                    <h3>Anna Smith</h3>
-                    <p>Dyrektor ds. Innowacji, TechCorp</p>
-                </div>
-                <div class="speaker-card">
-                    <img src="https://memi.klev.club/uploads/posts/2024-04/memi-klev-club-nz1j-p-memi-negr-v-furazhke-4.jpg" class="speaker-image" alt="Speaker 2">
-                    <h3>John Smith</h3>
-                    <p>Założyciel FutureTech</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="registration">
-            <h2 class="section-title">Rejestracja</h2>
-            <div class="registration-form">
-                <form id="registrationForm">
-                    <div class="form-group">
-                        <input type="text" placeholder="Imię i nazwisko" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" placeholder="Adres email" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="tel" placeholder="Numer telefonu" required>
-                    </div>
-                    <button type="submit" class="cta-button">Wyślij zgłoszenie</button>
-                </form>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="contact-info">
-            <div>
-                <h4>Kontakt</h4>
-                <p><i class="fas fa-envelope"></i> kontakt@techsummit.pl</p>
-                <p><i class="fas fa-phone"></i> +48 123 456 789</p>
-            </div>
-            <div class="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2443.325170269183!2d21.01221531579705!3d52.23290117976128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471ecc669a869b01%3A0x42f3517ef1d96104!2sPalace%20of%20Culture%20and%20Science!5e0!3m2!1sen!2spl!4v1624449876781!5m2!1sen!2spl" 
-                        style="border:0;" allowfullscreen loading="lazy"></iframe>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Transform Your Learning Experience</h2>
+                <p>Eduland Academy offers personalized online courses for students and professionals. Learn at your own pace with expert instructors and interactive content.</p>
+                <a href="#" class="btn">Explore Courses</a>
             </div>
         </div>
-        <div class="social-links">
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-linkedin"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
+    </section>
+
+    <!-- Quiz Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Interactive Quiz</h2>
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <div class="question-counter">Question <span id="current">1</span>/<span id="total">5</span></div>
+                    <div class="score-display">Score: <span id="score">0</span></div>
+                </div>
+                
+                <div class="question" id="question">Which of the following is NOT a programming paradigm?</div>
+                
+                <div class="options" id="options">
+                    <div class="option" data-value="1">Object-Oriented Programming</div>
+                    <div class="option" data-value="2">Functional Programming</div>
+                    <div class="option" data-value="3">Procedural Programming</div>
+                    <div class="option" data-value="4">Linear Programming</div>
+                </div>
+                
+                <div class="quiz-controls">
+                    <button class="btn" id="prev-btn" disabled><i class="fas fa-arrow-left"></i> Previous</button>
+                    <button class="btn" id="next-btn">Next Question <i class="fas fa-arrow-right"></i></button>
+                </div>
+                
+                <div id="result"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Progress Section -->
+    <section class="section" style="background-color: #f0f7ff;">
+        <div class="container">
+            <h2 class="section-title">Course Progress</h2>
+            <div class="course-container">
+                <div class="course-header">
+                    <div class="course-title">JavaScript Fundamentals</div>
+                    <div class="course-instructor">Instructor: Dr. Sarah Johnson</div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-info">
+                        <span>Course Progress</span>
+                        <span id="progress-percent">65%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                </div>
+                
+                <div class="modules">
+                    <div class="module completed">
+                        <div class="module-check"><i class="fas fa-check"></i></div>
+                        <div class="module-content">
+                            <div class="module-title">Introduction to JavaScript</div>
+                            <div class="module-duration">3 Lessons • 45 min</div>
+                        </div>
+                    </div>
+                    
+                    <div class="module completed">
+                        <div class="module-check"><i class="fas fa-check"></i></div>
+                        <div class="module-content">
+                            <div class="module-title">Variables and Data Types</div>
+                            <div class="module-duration">4 Lessons • 60 min</div>
+                        </div>
+                    </div>
+                    
+                    <div class="module completed">
+                        <div class="module-check"><i class="fas fa-check"></i></div>
+                        <div class="module-content">
+                            <div class="module-title">Control Structures</div>
+                            <div class="module-duration">5 Lessons • 75 min</div>
+                        </div>
+                    </div>
+                    
+                    <div class="module">
+                        <div class="module-check"><i class="fas fa-bookmark"></i></div>
+                        <div class="module-content">
+                            <div class="module-title">Functions and Scope</div>
+                            <div class="module-duration">4 Lessons • 60 min</div>
+                        </div>
+                    </div>
+                    
+                    <div class="module">
+                        <div class="module-check"><i class="fas fa-bookmark"></i></div>
+                        <div class="module-content">
+                            <div class="module-title">Objects and Arrays</div>
+                            <div class="module-duration">6 Lessons • 90 min</div>
+                        </div>
+                    </div>
+                    
+                    <div class="module">
+                        <div class="module-check"><i class="fas fa-bookmark"></i></div>
+                        <div class="module-content">
+                            <div class="module-title">DOM Manipulation</div>
+                            <div class="module-duration">5 Lessons • 80 min</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Learning Schedule</h2>
+            <div class="schedule-container">
+                <div class="schedule-controls">
+                    <div class="week-selector">
+                        <button class="week-btn"><i class="fas fa-chevron-left"></i></button>
+                        <span>Week of June 10, 2023</span>
+                        <button class="week-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    
+                    <div class="schedule-view">
+                        <button class="view-btn active">Weekly</button>
+                        <button class="view-btn">Daily</button>
+                    </div>
+                </div>
+                
+                <!-- Desktop Schedule -->
+                <div class="schedule">
+                    <div class="day">
+                        <div class="day-title">Monday</div>
+                        <div class="lesson">
+                            <div class="lesson-time">10:00 - 11:30</div>
+                            <div class="lesson-title">JavaScript Fundamentals</div>
+                        </div>
+                        <div class="lesson">
+                            <div class="lesson-time">14:00 - 15:30</div>
+                            <div class="lesson-title">Web Design Principles</div>
+                        </div>
+                    </div>
+                    
+                    <div class="day">
+                        <div class="day-title">Tuesday</div>
+                        <div class="lesson">
+                            <div class="lesson-time">9:00 - 10:30</div>
+                            <div class="lesson-title">Data Structures</div>
+                        </div>
+                    </div>
+                    
+                    <div class="day">
+                        <div class="day-title">Wednesday</div>
+                        <div class="lesson">
+                            <div class="lesson-time">11:00 - 12:30</div>
+                            <div class="lesson-title">Algorithms</div>
+                        </div>
+                        <div class="lesson">
+                            <div class="lesson-time">15:00 - 16:30</div>
+                            <div class="lesson-title">Group Project Work</div>
+                        </div>
+                    </div>
+                    
+                    <div class="day">
+                        <div class="day-title">Thursday</div>
+                        <div class="lesson">
+                            <div class="lesson-time">10:00 - 11:30</div>
+                            <div class="lesson-title">JavaScript Fundamentals</div>
+                        </div>
+                        <div class="lesson">
+                            <div class="lesson-time">13:00 - 14:30</div>
+                            <div class="lesson-title">Database Design</div>
+                        </div>
+                    </div>
+                    
+                    <div class="day">
+                        <div class="day-title">Friday</div>
+                        <div class="lesson">
+                            <div class="lesson-time">14:00 - 16:00</div>
+                            <div class="lesson-title">Weekly Review Session</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mobile Schedule -->
+                <div class="mobile-schedule">
+                    <div class="mobile-day">
+                        <div class="day-title">Monday, June 10</div>
+                        <div class="lesson">
+                            <div class="lesson-time">10:00 - 11:30</div>
+                            <div class="lesson-title">JavaScript Fundamentals</div>
+                        </div>
+                        <div class="lesson">
+                            <div class="lesson-time">14:00 - 15:30</div>
+                            <div class="lesson-title">Web Design Principles</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mobile-day">
+                        <div class="day-title">Tuesday, June 11</div>
+                        <div class="lesson">
+                            <div class="lesson-time">9:00 - 10:30</div>
+                            <div class="lesson-title">Data Structures</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mobile-day">
+                        <div class="day-title">Wednesday, June 12</div>
+                        <div class="lesson">
+                            <div class="lesson-time">11:00 - 12:30</div>
+                            <div class="lesson-title">Algorithms</div>
+                        </div>
+                        <div class="lesson">
+                            <div class="lesson-time">15:00 - 16:30</div>
+                            <div class="lesson-title">Group Project Work</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About Eduland</h3>
+                    <p>Eduland Academy is a premier online learning platform committed to providing high-quality education to students worldwide.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Popular Courses</h3>
+                    <ul>
+                        <li><a href="#">Web Development Bootcamp</a></li>
+                        <li><a href="#">Data Science Fundamentals</a></li>
+                        <li><a href="#">Machine Learning with Python</a></li>
+                        <li><a href="#">UX/UI Design Masterclass</a></li>
+                        <li><a href="#">Digital Marketing Strategy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Courses</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Instructors</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Education St, Learn City</li>
+                        <li><i class="fas fa-phone"></i> (555) 123-4567</li>
+                        <li><i class="fas fa-envelope"></i> info@edulandacademy.com</li>
+                        <li><i class="fas fa-clock"></i> Mon-Fri: 8AM - 8PM</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2023 Eduland Academy. All rights reserved. Empowering learners worldwide.
+            </div>
         </div>
     </footer>
 
-    <div class="lightbox">
-        <img class="lightbox-img" src="" alt="Lightbox">
-    </div>
-
     <script>
-        // Lightbox functionality
-        const galleryItems = document.querySelectorAll('.gallery-item');
-        const lightbox = document.querySelector('.lightbox');
-        const lightboxImg = document.querySelector('.lightbox-img');
+        // Quiz Functionality
+        const quizData = [
+            {
+                question: "Which of the following is NOT a programming paradigm?",
+                options: [
+                    "Object-Oriented Programming",
+                    "Functional Programming",
+                    "Procedural Programming",
+                    "Linear Programming"
+                ],
+                correct: 4
+            },
+            {
+                question: "What does CSS stand for?",
+                options: [
+                    "Computer Style Sheets",
+                    "Creative Style System",
+                    "Cascading Style Sheets",
+                    "Colorful Style Sheets"
+                ],
+                correct: 3
+            },
+            {
+                question: "Which HTML tag is used for creating a hyperlink?",
+                options: [
+                    "<link>",
+                    "<a>",
+                    "<href>",
+                    "<hyperlink>"
+                ],
+                correct: 2
+            },
+            {
+                question: "What is the correct way to declare a JavaScript variable?",
+                options: [
+                    "variable name;",
+                    "v name;",
+                    "var name;",
+                    "let name;"
+                ],
+                correct: 3
+            },
+            {
+                question: "Which of these is a JavaScript framework?",
+                options: [
+                    "Laravel",
+                    "Django",
+                    "React",
+                    "Flask"
+                ],
+                correct: 3
+            }
+        ];
 
-        galleryItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const imgSrc = item.querySelector('img').src;
-                lightboxImg.src = imgSrc;
-                lightbox.classList.add('active');
-                document.body.style.overflow = 'hidden';
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedOption = null;
+
+        const questionEl = document.getElementById('question');
+        const optionsEl = document.getElementById('options');
+        const currentEl = document.getElementById('current');
+        const totalEl = document.getElementById('total');
+        const scoreEl = document.getElementById('score');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const resultEl = document.getElementById('result');
+
+        totalEl.textContent = quizData.length;
+        scoreEl.textContent = score;
+
+        function loadQuestion() {
+            const quiz = quizData[currentQuestion];
+            questionEl.textContent = quiz.question;
+            optionsEl.innerHTML = '';
+            
+            quiz.options.forEach((option, index) => {
+                const optionEl = document.createElement('div');
+                optionEl.classList.add('option');
+                optionEl.textContent = option;
+                optionEl.dataset.value = index + 1;
+                optionEl.addEventListener('click', selectOption);
+                optionsEl.appendChild(optionEl);
+            });
+            
+            currentEl.textContent = currentQuestion + 1;
+            prevBtn.disabled = currentQuestion === 0;
+            
+            if (currentQuestion === quizData.length - 1) {
+                nextBtn.textContent = 'Finish Quiz';
+            } else {
+                nextBtn.textContent = 'Next Question';
+            }
+        }
+
+        function selectOption(e) {
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => option.classList.remove('selected'));
+            
+            e.target.classList.add('selected');
+            selectedOption = parseInt(e.target.dataset.value);
+        }
+
+        function nextQuestion() {
+            if (selectedOption === null) return;
+            
+            // Check answer
+            if (selectedOption === quizData[currentQuestion].correct) {
+                score++;
+                scoreEl.textContent = score;
+            }
+            
+            // Move to next question or finish
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                selectedOption = null;
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                selectedOption = null;
+                loadQuestion();
+            }
+        }
+
+        function showResults() {
+            quizContainer = document.querySelector('.quiz-container');
+            quizContainer.style.display = 'none';
+            
+            resultEl.style.display = 'block';
+            resultEl.textContent = `Quiz Completed! Your Score: ${score}/${quizData.length}`;
+        }
+
+        nextBtn.addEventListener('click', nextQuestion);
+        prevBtn.addEventListener('click', prevQuestion);
+
+        // Course Progress
+        const modules = document.querySelectorAll('.module');
+        const progressFill = document.getElementById('progress-fill');
+        const progressPercent = document.getElementById('progress-percent');
+        
+        modules.forEach(module => {
+            const check = module.querySelector('.module-check');
+            check.addEventListener('click', function() {
+                module.classList.toggle('completed');
+                updateProgress();
             });
         });
 
-        lightbox.addEventListener('click', (e) => {
-            if (e.target !== lightboxImg) {
-                lightbox.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            }
-        });
+        function updateProgress() {
+            const completed = document.querySelectorAll('.module.completed').length;
+            const total = modules.length;
+            const percent = Math.round((completed / total) * 100);
+            
+            progressFill.style.width = `${percent}%`;
+            progressPercent.textContent = `${percent}%`;
+        }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-                lightbox.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            }
-        });
+        // Initialize progress
+        updateProgress();
 
-        // Form submission
-        document.getElementById('registrationForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Dziękujemy za zgłoszenie! Skontaktujemy się wkrótce.');
-            e.target.reset();
-        });
-
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+        // Schedule View Toggle
+        const viewBtns = document.querySelectorAll('.view-btn');
+        viewBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                viewBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
             });
         });
 
-        // Video controls
-        const aboutVideo = document.querySelector('.about-video');
-        aboutVideo.addEventListener('mouseenter', () => aboutVideo.controls = true);
-        aboutVideo.addEventListener('mouseleave', () => aboutVideo.controls = false);
+        // Load initial quiz question
+        loadQuestion();
     </script>
 </body>
 </html>

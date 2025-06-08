@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookCraft Publishing</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcfcfc; /* Light background for consistency */
+        }
+        .book-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .book-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        /* Countdown timer styles */
+        .countdown-item {
+            @apply flex flex-col items-center justify-center p-4 bg-purple-100 rounded-lg shadow-md;
+        }
+        .countdown-value {
+            @apply text-5xl font-bold text-purple-700;
+        }
+        .countdown-label {
+            @apply text-lg text-gray-600 uppercase;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <header class="py-6 px-4 md:px-8 bg-white shadow-sm sticky top-0 z-10">
+        <nav class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-purple-700">BookCraft Publishing</h1>
+            <ul class="hidden md:flex space-x-6">
+                <li><a href="#book-catalog" class="text-gray-600 hover:text-purple-700 transition-colors text-lg">Catalog</a></li>
+                <li><a href="#new-release" class="text-gray-600 hover:text-purple-700 transition-colors text-lg">New Release</a></li>
+                <li><a href="#pre-order" class="text-gray-600 hover:text-purple-700 transition-colors text-lg">Pre-order</a></li>
+            </ul>
+            <button class="md:hidden p-2 rounded-md hover:bg-gray-100 transition-colors">
+                <!-- Hamburger icon for mobile -->
+                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <main class="container mx-auto py-12 px-4 md:px-8 flex-grow">
+        <!-- Book Catalog Section -->
+        <section id="book-catalog" class="mb-16">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-purple-800 text-center mb-12">Our Book Catalog</h2>
+
+            <!-- Filters -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="filter-button px-6 py-2 rounded-full bg-purple-600 text-white font-semibold hover:bg-purple-700 transition-colors" data-filter="all">All Genres</button>
+                <button class="filter-button px-6 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition-colors" data-filter="fantasy">Fantasy</button>
+                <button class="filter-button px-6 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition-colors" data-filter="sci-fi">Sci-Fi</button>
+                <button class="filter-button px-6 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition-colors" data-filter="thriller">Thriller</button>
+                <button class="filter-button px-6 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition-colors" data-filter="romance">Romance</button>
+                <button class="filter-button px-6 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition-colors" data-filter="mystery">Mystery</button>
+            </div>
+
+            <!-- Book Grid -->
+            <div id="book-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <!-- Books will be loaded here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- New Book Landing Page Section -->
+        <section id="new-release" class="mt-16 pt-16 border-t border-gray-200 text-center">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-purple-800 mb-8">Introducing Our New Release!</h2>
+            <div class="bg-gradient-to-br from-purple-50 to-indigo-50 p-8 rounded-xl shadow-lg max-w-4xl mx-auto">
+                <img src="https://placehold.co/400x600/b8a2e1/ffffff?text=New+Book+Cover" alt="New Book Cover" class="w-64 h-auto rounded-lg shadow-xl mx-auto mb-8">
+                <h3 class="text-4xl font-bold text-purple-900 mb-4">The Chronicles of Eldoria: Whispers of the Forgotten Star</h3>
+                <p class="text-xl text-gray-700 mb-6 max-w-2xl mx-auto">Embark on an epic journey through ancient lands, mystical creatures, and a destiny that will reshape the world.</p>
+                <p class="text-lg text-gray-800 font-semibold mb-8">By A.L. Sterling</p>
+
+                <h4 class="text-3xl font-extrabold text-purple-800 mb-6">Launch Countdown!</h4>
+                <div id="countdown-timer" class="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-xl mx-auto">
+                    <div class="countdown-item">
+                        <span id="countdown-days" class="countdown-value">00</span>
+                        <span class="countdown-label">Days</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="countdown-hours" class="countdown-value">00</span>
+                        <span class="countdown-label">Hours</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="countdown-minutes" class="countdown-value">00</span>
+                        <span class="countdown-label">Minutes</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="countdown-seconds" class="countdown-value">00</span>
+                        <span class="countdown-label">Seconds</span>
+                    </div>
+                </div>
+                <p id="countdown-message" class="text-2xl font-bold text-green-700 mt-6 hidden">Book is now available!</p>
+            </div>
+        </section>
+
+        <!-- Pre-order Form Section -->
+        <section id="pre-order" class="mt-16 pt-16 border-t border-gray-200 bg-white p-8 rounded-xl shadow-lg max-w-2xl mx-auto">
+            <h2 class="text-3xl font-bold text-purple-800 text-center mb-8">Pre-order Your Copy Today!</h2>
+            <form id="preorder-form" class="space-y-6">
+                <div>
+                    <label for="fullName" class="block text-gray-700 text-lg font-semibold mb-2">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" class="w-full p-3 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500" placeholder="John Doe">
+                    <p id="fullName-error" class="text-red-500 text-sm mt-1 hidden">Full Name is required.</p>
+                </div>
+                <div>
+                    <label for="email" class="block text-gray-700 text-lg font-semibold mb-2">Email Address</label>
+                    <input type="email" id="email" name="email" class="w-full p-3 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500" placeholder="john.doe@example.com">
+                    <p id="email-error" class="text-red-500 text-sm mt-1 hidden">A valid Email Address is required.</p>
+                </div>
+                <div>
+                    <label for="quantity" class="block text-gray-700 text-lg font-semibold mb-2">Quantity</label>
+                    <input type="number" id="quantity" name="quantity" class="w-full p-3 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500" value="1" min="1">
+                    <p id="quantity-error" class="text-red-500 text-sm mt-1 hidden">Quantity must be at least 1.</p>
+                </div>
+                <button type="submit" class="w-full px-6 py-3 bg-purple-600 text-white text-xl font-semibold rounded-md hover:bg-purple-700 transition-colors shadow-md">Place Pre-order</button>
+            </form>
+            <div id="preorder-message" class="mt-4 p-4 rounded-md text-center hidden"></div>
+        </section>
+    </main>
+
+    <footer class="py-8 px-4 md:px-8 bg-gray-800 text-white text-center mt-12">
+        <p>&copy; 2025 BookCraft Publishing. All rights reserved.</p>
+        <p class="text-sm mt-2">Crafting stories, building worlds.</p>
+    </footer>
+
+    <script>
+        // --- Book Catalog Logic ---
+        const books = [
+            { id: 1, title: "The Last Sorcerer", author: "Elara Vance", genre: "fantasy", image: "https://placehold.co/400x600/b8a2e1/ffffff?text=Fantasy+1", description: "A young apprentice discovers a forgotten magic that could save or doom her world." },
+            { id: 2, title: "Stars Beyond Reach", author: "Kaelen Thorne", genre: "sci-fi", image: "https://placehold.co/400x600/a2e1b8/ffffff?text=Sci-Fi+1", description: "Humanity's first interstellar mission faces an unknown threat beyond the known galaxy." },
+            { id: 3, title: "Silent Whispers", author: "Dr. Evelyn Reed", genre: "thriller", image: "https://placehold.co/400x600/e1b8a2/ffffff?text=Thriller+1", description: "A detective uncovers a conspiracy in a quiet town where secrets refuse to stay buried." },
+            { id: 4, title: "Love's Unfolding Petals", author: "Isabella Moretti", genre: "romance", image: "https://placehold.co/400x600/b8e1a2/ffffff?text=Romance+1", description: "Two souls from different worlds find unexpected love amidst the chaos of fate." },
+            { id: 5, title: "The Jade Scarab", author: "Marcus Finch", genre: "mystery", image: "https://placehold.co/400x600/a2b8e1/ffffff?text=Mystery+1", description: "An ancient artifact holds the key to a modern-day murder, perplexing even the most seasoned investigators." },
+            { id: 6, title: "Chronicles of Eldoria: Dawn of Ages", author: "A.L. Sterling", genre: "fantasy", image: "https://placehold.co/400x600/b8a2e1/ffffff?text=Fantasy+2", description: "The epic tale of creation and conflict in a realm shaped by ancient deities and heroes." },
+            { id: 7, title: "Quantum Entanglement", author: "Dr. Aris Thorne", genre: "sci-fi", image: "https://placehold.co/400x600/a2e1b8/ffffff?text=Sci-Fi+2", description: "A groundbreaking discovery in quantum physics opens a portal to alternate realities, with unforeseen consequences." },
+        ];
+
+        const bookGrid = document.getElementById('book-grid');
+        const filterButtons = document.querySelectorAll('.filter-button');
+
+        /**
+         * Renders book cards to the book grid.
+         * @param {Array} filteredBooks - An array of book objects to render.
+         */
+        function renderBooks(filteredBooks) {
+            bookGrid.innerHTML = ''; // Clear current books
+            if (filteredBooks.length === 0) {
+                bookGrid.innerHTML = '<p class="col-span-full text-center text-gray-500 text-lg">No books found for this genre.</p>';
+                return;
+            }
+            filteredBooks.forEach(book => {
+                const bookCard = document.createElement('div');
+                bookCard.classList.add('book-card', 'bg-white', 'rounded-xl', 'shadow-md', 'overflow-hidden');
+                bookCard.innerHTML = `
+                    <img src="${book.image}" alt="${book.title}" class="w-full h-72 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-2xl font-semibold text-purple-700 mb-2 truncate">${book.title}</h3>
+                        <p class="text-gray-600 text-base">By: ${book.author}</p>
+                        <p class="text-gray-500 text-sm">Genre: ${book.genre.charAt(0).toUpperCase() + book.genre.slice(1)}</p>
+                        <p class="text-gray-700 text-sm mt-2 line-clamp-3">${book.description}</p>
+                    </div>
+                `;
+                bookGrid.appendChild(bookCard);
+            });
+        }
+
+        // Initial render of all books on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderBooks(books);
+        });
+
+        // Add event listeners for filter buttons
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active button styling
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('bg-purple-600', 'text-white');
+                    btn.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                button.classList.remove('bg-gray-200', 'text-gray-700');
+                button.classList.add('bg-purple-600', 'text-white');
+
+                const filterGenre = button.dataset.filter;
+                if (filterGenre === 'all') {
+                    renderBooks(books);
+                } else {
+                    const filtered = books.filter(book => book.genre === filterGenre);
+                    renderBooks(filtered);
+                }
+            });
+        });
+
+        // --- New Book Countdown Timer Logic ---
+        // Set the launch date to 1 month and 15 days from today
+        const launchDate = new Date();
+        launchDate.setMonth(launchDate.getMonth() + 1);
+        launchDate.setDate(launchDate.getDate() + 15);
+
+        const countdownDays = document.getElementById('countdown-days');
+        const countdownHours = document.getElementById('countdown-hours');
+        const countdownMinutes = document.getElementById('countdown-minutes');
+        const countdownSeconds = document.getElementById('countdown-seconds');
+        const countdownMessage = document.getElementById('countdown-message');
+        const countdownTimerContainer = document.getElementById('countdown-timer');
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = launchDate.getTime() - now;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                countdownTimerContainer.classList.add('hidden');
+                countdownMessage.classList.remove('hidden');
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            countdownDays.textContent = String(days).padStart(2, '0');
+            countdownHours.textContent = String(hours).padStart(2, '0');
+            countdownMinutes.textContent = String(minutes).padStart(2, '0');
+            countdownSeconds.textContent = String(seconds).padStart(2, '0');
+        }
+
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown(); // Call once immediately to avoid initial flicker
+
+        // --- Pre-order Form Validation Logic ---
+        const preorderForm = document.getElementById('preorder-form');
+        const fullNameInput = document.getElementById('fullName');
+        const emailInput = document.getElementById('email');
+        const quantityInput = document.getElementById('quantity');
+        const preorderMessage = document.getElementById('preorder-message');
+
+        const fullNameError = document.getElementById('fullName-error');
+        const emailError = document.getElementById('email-error');
+        const quantityError = document.getElementById('quantity-error');
+
+        /**
+         * Validates the pre-order form fields.
+         * @returns {boolean} True if the form is valid, false otherwise.
+         */
+        function validatePreorderForm() {
+            let isValid = true;
+
+            // Validate Full Name
+            if (fullNameInput.value.trim() === '') {
+                fullNameError.classList.remove('hidden');
+                isValid = false;
+            } else {
+                fullNameError.classList.add('hidden');
+            }
+
+            // Validate Email
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailInput.value.trim() === '' || !emailPattern.test(emailInput.value.trim())) {
+                emailError.classList.remove('hidden');
+                isValid = false;
+            } else {
+                emailError.classList.add('hidden');
+            }
+
+            // Validate Quantity
+            const quantity = parseInt(quantityInput.value);
+            if (isNaN(quantity) || quantity < 1) {
+                quantityError.classList.remove('hidden');
+                isValid = false;
+            } else {
+                quantityError.classList.add('hidden');
+            }
+
+            return isValid;
+        }
+
+        // Handle form submission
+        preorderForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            if (validatePreorderForm()) {
+                // Collect form data
+                const formData = {
+                    fullName: fullNameInput.value.trim(),
+                    email: emailInput.value.trim(),
+                    quantity: parseInt(quantityInput.value)
+                };
+
+                // For demonstration, log the data and show a success message
+                console.log('Pre-order Submitted:', formData);
+
+                preorderMessage.classList.remove('hidden', 'bg-red-100', 'text-red-700');
+                preorderMessage.classList.add('bg-green-100', 'text-green-700');
+                preorderMessage.textContent = 'Your pre-order has been placed successfully! Thank you!';
+
+                preorderForm.reset(); // Clear the form
+            } else {
+                preorderMessage.classList.remove('hidden', 'bg-green-100', 'text-green-700');
+                preorderMessage.classList.add('bg-red-100', 'text-red-700');
+                preorderMessage.textContent = 'Please correct the errors in the form.';
+            }
+        });
+    </script>
+</body>
+</html>

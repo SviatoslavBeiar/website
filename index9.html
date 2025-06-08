@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusicNest - Online Store for Musicians</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fafc; /* Light gray background */
+        }
+        .product-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .product-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        /* Slider specific styles */
+        .slider-container {
+            overflow: hidden;
+            position: relative;
+        }
+        .slider-wrapper {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .slider-item {
+            min-width: 100%; /* Each item takes full width of its container */
+            box-sizing: border-box; /* Include padding and border in the width */
+            padding: 0 1rem; /* Adjust padding for spacing between items */
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+        }
+        .slider-dots {
+            @apply flex justify-center mt-4 space-x-2;
+        }
+        .slider-dot {
+            @apply w-3 h-3 bg-gray-300 rounded-full cursor-pointer transition-colors hover:bg-gray-400;
+        }
+        .slider-dot.active {
+            @apply bg-purple-600;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <header class="py-6 px-4 md:px-8 bg-white shadow-sm sticky top-0 z-10">
+        <nav class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-purple-700">MusicNest</h1>
+            <ul class="hidden md:flex space-x-6">
+                <li><a href="#instruments" class="text-gray-600 hover:text-purple-700 transition-colors text-lg">Instruments</a></li>
+                <li><a href="#hits-of-the-week" class="text-gray-600 hover:text-purple-700 transition-colors text-lg">Weekly Hits</a></li>
+            </ul>
+            <button class="md:hidden p-2 rounded-md hover:bg-gray-100 transition-colors">
+                <!-- Hamburger icon for mobile -->
+                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <main class="container mx-auto py-12 px-4 md:px-8 flex-grow">
+        <!-- Instruments Catalog Section -->
+        <section id="instruments" class="mb-16">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-purple-800 text-center mb-12">Our Instruments</h2>
+
+            <!-- Filters -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="filter-button px-6 py-2 rounded-full bg-purple-600 text-white font-semibold hover:bg-purple-700 transition-colors" data-filter="all">All</button>
+                <button class="filter-button px-6 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition-colors" data-filter="guitars">Guitars</button>
+                <button class="filter-button px-6 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition-colors" data-filter="keyboards">Keyboards</button>
+                <button class="filter-button px-6 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition-colors" data-filter="drums">Drums</button>
+                <button class="filter-button px-6 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition-colors" data-filter="accessories">Accessories</button>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <!-- Product cards will be loaded here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Hits of the Week Slider Section -->
+        <section id="hits-of-the-week" class="mt-16 pt-16 border-t border-gray-200 text-center bg-purple-50 p-8 rounded-xl shadow-lg">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-purple-800 mb-8">Hits of the Week</h2>
+
+            <div class="slider-container w-full max-w-4xl mx-auto relative">
+                <div id="slider-wrapper" class="slider-wrapper">
+                    <!-- Slider items (product cards) will be loaded here by JavaScript -->
+                </div>
+                <button id="slider-prev" class="absolute left-0 top-1/2 -translate-y-1/2 bg-white p-3 rounded-full shadow-lg hover:bg-gray-100 transition-colors z-10">
+                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <button id="slider-next" class="absolute right-0 top-1/2 -translate-y-1/2 bg-white p-3 rounded-full shadow-lg hover:bg-gray-100 transition-colors z-10">
+                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+            <div id="slider-dots" class="slider-dots"></div>
+        </section>
+    </main>
+
+    <footer class="py-8 px-4 md:px-8 bg-gray-800 text-white text-center mt-12">
+        <p>&copy; 2025 MusicNest. All rights reserved.</p>
+        <p class="text-sm mt-2">Your harmony, our passion.</p>
+    </footer>
+
+    <script>
+        // --- Product Data ---
+        const instruments = [
+            { id: 1, name: "Electric Guitar Stratocaster", type: "guitars", price: 799.99, image: "https://placehold.co/400x300/a78bfa/ffffff?text=Electric+Guitar", description: "Classic electric guitar, perfect for rock and blues." },
+            { id: 2, name: "Digital Piano 88-Key", type: "keyboards", price: 1299.00, image: "https://placehold.co/400x300/60a5fa/ffffff?text=Digital+Piano", description: "Full-sized digital piano with weighted keys and rich sound." },
+            { id: 3, name: "Acoustic Drum Set", type: "drums", price: 1499.50, image: "https://placehold.co/400x300/818cf8/ffffff?text=Drum+Set", description: "Complete 5-piece acoustic drum set, ideal for beginners and pros." },
+            { id: 4, name: "Microphone Condenser Studio", type: "accessories", price: 199.99, image: "https://placehold.co/400x300/6366f1/ffffff?text=Microphone", description: "High-quality condenser microphone for studio recording." },
+            { id: 5, name: "Bass Guitar Jazz Bass", type: "guitars", price: 899.99, image: "https://placehold.co/400x300/a78bfa/ffffff?text=Bass+Guitar", description: "Versatile bass guitar with a smooth tone and comfortable playability." },
+            { id: 6, name: "Synthesizer Workstation", type: "keyboards", price: 2500.00, image: "https://placehold.co/400x300/60a5fa/ffffff?text=Synthesizer", description: "Powerful synthesizer with a vast sound library and sequencing capabilities." },
+            { id: 7, name: "Electronic Drum Kit", type: "drums", price: 850.00, image: "https://placehold.co/400x300/818cf8/ffffff?text=Electronic+Drums", description: "Compact electronic drum kit with realistic sounds and quiet mesh heads." },
+            { id: 8, name: "Guitar Amplifier 40W", type: "accessories", price: 249.00, image: "https://placehold.co/400x300/6366f1/ffffff?text=Guitar+Amp", description: "Practice amplifier with multiple effects and headphone output." },
+            { id: 9, name: "Acoustic Guitar Dreadnought", type: "guitars", price: 450.00, image: "https://placehold.co/400x300/a78bfa/ffffff?text=Acoustic+Guitar", description: "Warm-sounding acoustic guitar, great for strumming and fingerpicking." }
+        ];
+
+        // "Hits of the Week" - A subset of instruments or specific picks
+        const hitsOfTheWeek = [
+            instruments[0], // Electric Guitar
+            instruments[2], // Acoustic Drum Set
+            instruments[5], // Synthesizer Workstation
+            instruments[8]  // Acoustic Guitar Dreadnought
+        ];
+
+        const productGrid = document.getElementById('product-grid');
+        const filterButtons = document.querySelectorAll('.filter-button');
+
+        /**
+         * Creates an HTML product card element.
+         * @param {Object} product - The product object.
+         * @returns {HTMLElement} The created product card element.
+         */
+        function createProductCard(product) {
+            const card = document.createElement('div');
+            card.classList.add(
+                'product-card',
+                'bg-white',
+                'rounded-xl',
+                'shadow-lg',
+                'overflow-hidden',
+                'p-4',
+                'flex',
+                'flex-col',
+                'items-center',
+                'text-center'
+            );
+
+            card.innerHTML = `
+                <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover rounded-md mb-4">
+                <h3 class="text-xl font-semibold text-purple-700 mb-2 truncate">${product.name}</h3>
+                <p class="text-gray-600 text-sm mb-1">Type: ${product.type.charAt(0).toUpperCase() + product.type.slice(1)}</p>
+                <p class="text-gray-800 text-2xl font-bold mb-4">$${product.price.toFixed(2)}</p>
+                <p class="text-gray-700 text-sm line-clamp-3 mb-4">${product.description}</p>
+                <button class="mt-auto px-6 py-2 bg-purple-600 text-white rounded-full font-semibold hover:bg-purple-700 transition-colors shadow-md">
+                    Add to Cart
+                </button>
+            `;
+            return card;
+        }
+
+        /**
+         * Renders product cards to the product grid.
+         * @param {Array} filteredProducts - An array of product objects to render.
+         */
+        function renderProducts(filteredProducts) {
+            productGrid.innerHTML = ''; // Clear current products
+            if (filteredProducts.length === 0) {
+                productGrid.innerHTML = '<p class="col-span-full text-center text-gray-500 text-lg">No products found for this category.</p>';
+                return;
+            }
+            filteredProducts.forEach(product => {
+                productGrid.appendChild(createProductCard(product));
+            });
+        }
+
+        // Initial render of all products on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts(instruments);
+        });
+
+        // Add event listeners for filter buttons
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active button styling
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('bg-purple-600', 'text-white');
+                    btn.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                button.classList.remove('bg-gray-200', 'text-gray-700');
+                button.classList.add('bg-purple-600', 'text-white');
+
+                const filterType = button.dataset.filter;
+                if (filterType === 'all') {
+                    renderProducts(instruments);
+                } else {
+                    const filtered = instruments.filter(instrument => instrument.type === filterType);
+                    renderProducts(filtered);
+                }
+            });
+        });
+
+        // --- Hits of the Week Slider Logic ---
+        const sliderWrapper = document.getElementById('slider-wrapper');
+        const sliderPrevBtn = document.getElementById('slider-prev');
+        const sliderNextBtn = document.getElementById('slider-next');
+        const sliderDotsContainer = document.getElementById('slider-dots');
+
+        let currentSlideIndex = 0;
+        let sliderInterval;
+
+        /**
+         * Renders the slider items.
+         */
+        function renderSliderItems() {
+            sliderWrapper.innerHTML = '';
+            hitsOfTheWeek.forEach(hit => {
+                const sliderItem = document.createElement('div');
+                sliderItem.classList.add('slider-item');
+                sliderItem.appendChild(createProductCard(hit)); // Reusing product card function
+                sliderWrapper.appendChild(sliderItem);
+            });
+        }
+
+        /**
+         * Updates the slider position and active dot.
+         */
+        function updateSlider() {
+            const itemWidth = sliderWrapper.children[0].clientWidth; // Get width of first item
+            sliderWrapper.style.transform = `translateX(-${currentSlideIndex * itemWidth}px)`;
+            updateDots();
+        }
+
+        /**
+         * Creates and updates slider navigation dots.
+         */
+        function updateDots() {
+            sliderDotsContainer.innerHTML = '';
+            for (let i = 0; i < hitsOfTheWeek.length; i++) {
+                const dot = document.createElement('span');
+                dot.classList.add('slider-dot');
+                if (i === currentSlideIndex) {
+                    dot.classList.add('active');
+                }
+                dot.dataset.index = i;
+                dot.addEventListener('click', () => {
+                    currentSlideIndex = i;
+                    updateSlider();
+                    resetSliderInterval();
+                });
+                sliderDotsContainer.appendChild(dot);
+            }
+        }
+
+        /**
+         * Moves the slider to the next item.
+         */
+        function nextSlide() {
+            currentSlideIndex = (currentSlideIndex + 1) % hitsOfTheWeek.length;
+            updateSlider();
+        }
+
+        /**
+         * Moves the slider to the previous item.
+         */
+        function prevSlide() {
+            currentSlideIndex = (currentSlideIndex - 1 + hitsOfTheWeek.length) % hitsOfTheWeek.length;
+            updateSlider();
+        }
+
+        /**
+         * Resets the automatic slider interval.
+         */
+        function resetSliderInterval() {
+            clearInterval(sliderInterval);
+            sliderInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+        }
+
+        // Add event listeners for slider navigation
+        sliderNextBtn.addEventListener('click', () => {
+            nextSlide();
+            resetSliderInterval();
+        });
+        sliderPrevBtn.addEventListener('click', () => {
+            prevSlide();
+            resetSliderInterval();
+        });
+
+        // Initialize slider on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSliderItems();
+            updateSlider(); // Set initial position and dots
+            resetSliderInterval(); // Start auto-play
+            // Re-calculate slider position on window resize
+            window.addEventListener('resize', updateSlider);
+        });
+    </script>
+</body>
+</html>

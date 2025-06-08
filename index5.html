@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtConnect</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Light gray background */
+        }
+        .gallery-item {
+            transform: scale(1);
+            transition: transform 0.2s ease-in-out;
+        }
+        .gallery-item:hover {
+            transform: scale(1.03);
+        }
+
+        /* Modal specific styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 100; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 70vh; /* Limit height of image */
+            object-fit: contain;
+            margin-bottom: 1rem;
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 36px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <header class="py-6 px-4 md:px-8 bg-white shadow-sm sticky top-0 z-10">
+        <nav class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-blue-700">ArtConnect</h1>
+            <ul class="hidden md:flex space-x-6">
+                <li><a href="#gallery" class="text-gray-600 hover:text-blue-700 transition-colors text-lg">Gallery</a></li>
+                <li><a href="#submit-work" class="text-gray-600 hover:text-blue-700 transition-colors text-lg">Submit Work</a></li>
+            </ul>
+            <button class="md:hidden p-2 rounded-md hover:bg-gray-100 transition-colors">
+                <!-- Hamburger icon for mobile -->
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <main class="container mx-auto py-12 px-4 md:px-8">
+        <!-- Gallery Section -->
+        <section id="gallery" class="mb-16">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-blue-800 text-center mb-12">Artwork Gallery</h2>
+
+            <!-- Filters -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="filter-button px-6 py-2 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors" data-filter="all">All</button>
+                <button class="filter-button px-6 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition-colors" data-filter="painting">Painting</button>
+                <button class="filter-button px-6 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition-colors" data-filter="sculpture">Sculpture</button>
+                <button class="filter-button px-6 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition-colors" data-filter="digital-art">Digital Art</button>
+                <button class="filter-button px-6 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition-colors" data-filter="photography">Photography</button>
+            </div>
+
+            <!-- Artwork Grid -->
+            <div id="artwork-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <!-- Artworks will be loaded here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Pop-up Preview Modal -->
+        <div id="artwork-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <img id="modal-image" src="" alt="Artwork Preview">
+                <h3 id="modal-title" class="text-2xl font-bold text-blue-800 mb-2"></h3>
+                <p id="modal-artist" class="text-gray-700 text-lg mb-1"></p>
+                <p id="modal-technique" class="text-gray-500 text-base"></p>
+            </div>
+        </div>
+
+        <!-- Submit Your Work Form Section -->
+        <section id="submit-work" class="bg-white p-8 rounded-xl shadow-lg max-w-2xl mx-auto">
+            <h2 class="text-3xl font-bold text-blue-800 text-center mb-8">Submit Your Work</h2>
+            <form id="submission-form" class="space-y-6">
+                <div>
+                    <label for="title" class="block text-gray-700 text-lg font-semibold mb-2">Artwork Title</label>
+                    <input type="text" id="title" name="title" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="Title of your artwork">
+                    <p id="title-error" class="text-red-500 text-sm mt-1 hidden">Title is required.</p>
+                </div>
+                <div>
+                    <label for="artist" class="block text-gray-700 text-lg font-semibold mb-2">Artist Name</label>
+                    <input type="text" id="artist" name="artist" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="Your name or pseudonym">
+                    <p id="artist-error" class="text-red-500 text-sm mt-1 hidden">Artist name is required.</p>
+                </div>
+                <div>
+                    <label for="technique" class="block text-gray-700 text-lg font-semibold mb-2">Technique</label>
+                    <select id="technique" name="technique" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Select a technique</option>
+                        <option value="painting">Painting</option>
+                        <option value="sculpture">Sculpture</option>
+                        <option value="digital-art">Digital Art</option>
+                        <option value="photography">Photography</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <p id="technique-error" class="text-red-500 text-sm mt-1 hidden">Technique is required.</p>
+                </div>
+                <div>
+                    <label for="imageUrl" class="block text-gray-700 text-lg font-semibold mb-2">Image URL</label>
+                    <input type="url" id="imageUrl" name="imageUrl" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="https://example.com/your-artwork.jpg">
+                    <p id="imageUrl-error" class="text-red-500 text-sm mt-1 hidden">Image URL is required and must be a valid URL.</p>
+                </div>
+                <button type="submit" class="w-full px-6 py-3 bg-blue-600 text-white text-xl font-semibold rounded-md hover:bg-blue-700 transition-colors shadow-md">Submit Artwork</button>
+            </form>
+            <div id="submission-message" class="mt-4 p-4 rounded-md text-center hidden"></div>
+        </section>
+    </main>
+
+    <footer class="py-8 px-4 md:px-8 bg-gray-800 text-white text-center mt-12">
+        <p>&copy; 2025 ArtConnect. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Sample Artwork Data
+        const artworks = [
+            { id: 1, title: "Morning Mist", artist: "Anna Smirnova", technique: "painting", imageUrl: "https://placehold.co/400x300/a78bfa/ffffff?text=Painting+1" },
+            { id: 2, title: "Urban Echoes", artist: "Ihor Melnyk", technique: "photography", imageUrl: "https://placehold.co/400x300/60a5fa/ffffff?text=Photography+1" },
+            { id: 3, title: "Abstract Form", artist: "Olena Kovalchuk", technique: "sculpture", imageUrl: "https://placehold.co/400x300/818cf8/ffffff?text=Sculpture+1" },
+            { id: 4, title: "Cyberpunk Night", artist: "Maksym Ponomarenko", technique: "digital-art", imageUrl: "https://placehold.co/400x300/6366f1/ffffff?text=Digital+Art+1" },
+            { id: 5, title: "Portrait in Blue", artist: "Victoria Bondarenko", technique: "painting", imageUrl: "https://placehold.co/400x300/a78bfa/ffffff?text=Painting+2" },
+            { id: 6, title: "Nature's Patterns", artist: "Serhii Lysenko", technique: "photography", imageUrl: "https://placehold.co/400x300/60a5fa/ffffff?text=Photography+2" },
+            { id: 7, title: "Geometric Harmony", artist: "Nataliia Savchenko", technique: "sculpture", imageUrl: "https://placehold.co/400x300/818cf8/ffffff?text=Sculpture+2" },
+            { id: 8, title: "Cosmic Landscape", artist: "Artem Kuzmenko", technique: "digital-art", imageUrl: "https://placehold.co/400x300/6366f1/ffffff?text=Digital+Art+2" },
+        ];
+
+        const artworkGrid = document.getElementById('artwork-grid');
+        const filterButtons = document.querySelectorAll('.filter-button');
+
+        // Function to render artworks
+        function renderArtworks(filteredArtworks) {
+            artworkGrid.innerHTML = ''; // Clear current artworks
+            filteredArtworks.forEach(artwork => {
+                const artworkCard = document.createElement('div');
+                artworkCard.classList.add('bg-white', 'rounded-lg', 'shadow-md', 'overflow-hidden', 'cursor-pointer', 'gallery-item');
+                artworkCard.dataset.id = artwork.id; // Store ID for modal
+
+                artworkCard.innerHTML = `
+                    <img src="${artwork.imageUrl}" alt="${artwork.title}" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-semibold text-blue-700 truncate">${artwork.title}</h3>
+                        <p class="text-gray-600 text-sm">Artist: ${artwork.artist}</p>
+                        <p class="text-gray-500 text-xs">Technique: ${artwork.technique}</p>
+                    </div>
+                `;
+                artworkGrid.appendChild(artworkCard);
+            });
+        }
+
+        // Initial render of all artworks
+        document.addEventListener('DOMContentLoaded', () => {
+            renderArtworks(artworks);
+        });
+
+        // Filter functionality
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active button styling
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('bg-blue-600', 'text-white');
+                    btn.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                button.classList.remove('bg-gray-200', 'text-gray-700');
+                button.classList.add('bg-blue-600', 'text-white');
+
+                const filter = button.dataset.filter;
+                if (filter === 'all') {
+                    renderArtworks(artworks);
+                } else {
+                    const filtered = artworks.filter(artwork => artwork.technique === filter);
+                    renderArtworks(filtered);
+                }
+            });
+        });
+
+        // Pop-up Preview Modal Logic
+        const artworkModal = document.getElementById('artwork-modal');
+        const modalImage = document.getElementById('modal-image');
+        const modalTitle = document.getElementById('modal-title');
+        const modalArtist = document.getElementById('modal-artist');
+        const modalTechnique = document.getElementById('modal-technique');
+        const closeButton = document.querySelector('.close-button');
+
+        artworkGrid.addEventListener('click', (event) => {
+            const clickedCard = event.target.closest('.gallery-item');
+            if (clickedCard) {
+                const artworkId = parseInt(clickedCard.dataset.id);
+                const artwork = artworks.find(art => art.id === artworkId);
+
+                if (artwork) {
+                    modalImage.src = artwork.imageUrl;
+                    modalImage.alt = artwork.title;
+                    modalTitle.textContent = artwork.title;
+                    modalArtist.textContent = `Artist: ${artwork.artist}`;
+                    modalTechnique.textContent = `Technique: ${artwork.technique}`;
+                    artworkModal.style.display = 'flex'; // Show modal
+                }
+            }
+        });
+
+        closeButton.addEventListener('click', () => {
+            artworkModal.style.display = 'none'; // Hide modal
+        });
+
+        // Close modal when clicking outside of it
+        window.addEventListener('click', (event) => {
+            if (event.target === artworkModal) {
+                artworkModal.style.display = 'none';
+            }
+        });
+
+        // Form Validation and Submission
+        const submissionForm = document.getElementById('submission-form');
+        const titleInput = document.getElementById('title');
+        const artistInput = document.getElementById('artist');
+        const techniqueSelect = document.getElementById('technique');
+        const imageUrlInput = document.getElementById('imageUrl');
+        const submissionMessage = document.getElementById('submission-message');
+
+        const titleError = document.getElementById('title-error');
+        const artistError = document.getElementById('artist-error');
+        const techniqueError = document.getElementById('technique-error');
+        const imageUrlError = document.getElementById('imageUrl-error');
+
+        function validateForm() {
+            let isValid = true;
+
+            // Validate Title
+            if (titleInput.value.trim() === '') {
+                titleError.classList.remove('hidden');
+                isValid = false;
+            } else {
+                titleError.classList.add('hidden');
+            }
+
+            // Validate Artist
+            if (artistInput.value.trim() === '') {
+                artistError.classList.remove('hidden');
+                isValid = false;
+            } else {
+                artistError.classList.add('hidden');
+            }
+
+            // Validate Technique
+            if (techniqueSelect.value === '') {
+                techniqueError.classList.remove('hidden');
+                isValid = false;
+            } else {
+                techniqueError.classList.add('hidden');
+            }
+
+            // Validate Image URL
+            const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+            if (imageUrlInput.value.trim() === '' || !urlPattern.test(imageUrlInput.value.trim())) {
+                imageUrlError.classList.remove('hidden');
+                isValid = false;
+            } else {
+                imageUrlError.classList.add('hidden');
+            }
+
+            return isValid;
+        }
+
+        submissionForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            if (validateForm()) {
+                const newArtwork = {
+                    title: titleInput.value.trim(),
+                    artist: artistInput.value.trim(),
+                    technique: techniqueSelect.value,
+                    imageUrl: imageUrlInput.value.trim()
+                };
+
+                // For demonstration, we'll just log the data and show a success message
+                console.log('New Artwork Submitted:', newArtwork);
+
+                submissionMessage.classList.remove('hidden');
+                submissionMessage.classList.remove('bg-red-100', 'text-red-700');
+                submissionMessage.classList.add('bg-green-100', 'text-green-700');
+                submissionMessage.textContent = 'Your artwork has been submitted successfully! Thank you!';
+
+                // Optionally, add the new artwork to the gallery (for a real app, this would involve a backend)
+                // artworks.push(newArtwork);
+                // renderArtworks(artworks); // Re-render gallery with new item
+
+                submissionForm.reset(); // Clear the form
+            } else {
+                submissionMessage.classList.remove('hidden');
+                submissionMessage.classList.remove('bg-green-100', 'text-green-700');
+                submissionMessage.classList.add('bg-red-100', 'text-red-700');
+                submissionMessage.textContent = 'Please correct the errors in the form.';
+            }
+        });
+    </script>
+</body>
+</html>

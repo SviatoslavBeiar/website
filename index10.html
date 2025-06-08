@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TripLite - Budget Tours & Travel</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fafc; /* Light background */
+        }
+        .destination-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .destination-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Modal specific styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 100; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 50vh; /* Limit height of image */
+            object-fit: contain;
+            margin-bottom: 1rem;
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 36px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Calendar specific styles */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+        .calendar-day {
+            @apply p-2 rounded-md text-center font-semibold;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .calendar-day.current-month {
+            @apply bg-gray-100 text-gray-800 hover:bg-gray-200;
+        }
+        .calendar-day.other-month {
+            @apply bg-gray-50 text-gray-400;
+        }
+        .calendar-day.today {
+            @apply bg-blue-500 text-white;
+        }
+        .calendar-day.event {
+            @apply bg-green-200 text-green-800 border-2 border-green-500;
+        }
+
+        /* FAQ Accordion transition */
+        .accordion-content {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .accordion-content.open {
+            max-height: 500px; /* Adjust as needed for content height */
+            opacity: 1;
+            padding-top: 1rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <header class="py-6 px-4 md:px-8 bg-white shadow-sm sticky top-0 z-10">
+        <nav class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-blue-700">TripLite</h1>
+            <ul class="hidden md:flex space-x-6">
+                <li><a href="#destinations" class="text-gray-600 hover:text-blue-700 transition-colors text-lg">Destinations</a></li>
+                <li><a href="#travel-calendar" class="text-gray-600 hover:text-blue-700 transition-colors text-lg">Calendar</a></li>
+                <li><a href="#faq" class="text-gray-600 hover:text-blue-700 transition-colors text-lg">FAQ</a></li>
+            </ul>
+            <button class="md:hidden p-2 rounded-md hover:bg-gray-100 transition-colors">
+                <!-- Hamburger icon for mobile -->
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <main class="container mx-auto py-12 px-4 md:px-8 flex-grow">
+        <!-- Popular Destinations Section -->
+        <section id="destinations" class="mb-16">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-blue-800 text-center mb-12">Popular Destinations</h2>
+
+            <!-- Destination Grid -->
+            <div id="destination-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <!-- Destination cards will be loaded here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Destination Details Modal -->
+        <div id="destination-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <img id="modal-image" src="" alt="Destination Image" class="rounded-lg">
+                <h3 id="modal-title" class="text-3xl font-bold text-blue-800 mb-2"></h3>
+                <p id="modal-description" class="text-gray-700 text-lg mb-4"></p>
+                <p id="modal-price" class="text-green-600 text-2xl font-bold">Starting from: </p>
+            </div>
+        </div>
+
+        <!-- Dynamic Travel Calendar Section -->
+        <section id="travel-calendar" class="mt-16 pt-16 border-t border-gray-200 text-center bg-blue-50 p-8 rounded-xl shadow-lg max-w-2xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-blue-800 mb-8">Travel Calendar</h2>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex justify-between items-center mb-6">
+                    <button id="prev-month-btn" class="p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors">
+                        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+                    <h3 id="current-month-year" class="text-2xl font-bold text-blue-700"></h3>
+                    <button id="next-month-btn" class="p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors">
+                        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+                <div class="grid grid-cols-7 gap-2 mb-4 font-bold text-gray-600">
+                    <div>Sun</div>
+                    <div>Mon</div>
+                    <div>Tue</div>
+                    <div>Wed</div>
+                    <div>Thu</div>
+                    <div>Fri</div>
+                    <div>Sat</div>
+                </div>
+                <div id="calendar-days-grid" class="calendar-grid">
+                    <!-- Calendar days will be loaded here by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="mt-16 pt-16 border-t border-gray-200 bg-gray-50 p-8 rounded-xl shadow-lg">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-blue-800 mb-12 text-center">Frequently Asked Questions</h2>
+            <div class="max-w-3xl mx-auto" id="faq-container">
+                <!-- FAQ items will be loaded here by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-8 px-4 md:px-8 bg-gray-800 text-white text-center mt-12">
+        <p>&copy; 2025 TripLite. All rights reserved.</p>
+        <p class="text-sm mt-2">Your journey, simplified.</p>
+    </footer>
+
+    <script>
+        // --- Popular Destinations Data ---
+        const destinations = [
+            { id: 1, name: "Paris, France", image: "https://placehold.co/400x300/a78bfa/ffffff?text=Paris", description: "Experience the romance and history of the City of Lights.", price: 799 },
+            { id: 2, name: "Kyoto, Japan", image: "https://placehold.co/400x300/60a5fa/ffffff?text=Kyoto", description: "Discover ancient temples, traditional gardens, and vibrant geisha districts.", price: 1200 },
+            { id: 3, name: "Bora Bora, French Polynesia", image: "https://placehold.co/400x300/818cf8/ffffff?text=Bora+Bora", description: "Paradise awaits with crystal-clear waters and luxurious overwater bungalows.", price: 2500 },
+            { id: 4, name: "Machu Picchu, Peru", image: "https://placehold.co/400x300/6366f1/ffffff?text=Machu+Picchu", description: "Explore the breathtaking ancient Inca citadel nestled high in the Andes.", price: 950 },
+            { id: 5, name: "Rome, Italy", image: "https://placehold.co/400x300/a78bfa/ffffff?text=Rome", description: "Step back in time amidst iconic ruins, magnificent art, and delicious cuisine.", price: 850 },
+            { id: 6, name: "Banff, Canada", image: "https://placehold.co/400x300/60a5fa/ffffff?text=Banff", description: "Majestic mountains, turquoise lakes, and abundant wildlife in the heart of the Rockies.", price: 1100 },
+            { id: 7, name: "Sydney, Australia", image: "https://placehold.co/400x300/818cf8/ffffff?text=Sydney", description: "Vibrant city life meets stunning coastal beauty, famous for its Opera House and Harbour Bridge.", price: 1800 },
+            { id: 8, name: "Cairo, Egypt", image: "https://placehold.co/400x300/6366f1/ffffff?text=Cairo", description: "Uncover ancient wonders, from the Pyramids of Giza to the Sphinx.", price: 1050 },
+        ];
+
+        const destinationGrid = document.getElementById('destination-grid');
+        const destinationModal = document.getElementById('destination-modal');
+        const modalImage = document.getElementById('modal-image');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
+        const modalPrice = document.getElementById('modal-price');
+        const closeButton = document.querySelector('#destination-modal .close-button');
+
+        /**
+         * Renders destination cards to the grid.
+         */
+        function renderDestinations() {
+            destinationGrid.innerHTML = ''; // Clear existing cards
+            destinations.forEach(destination => {
+                const card = document.createElement('div');
+                card.classList.add('destination-card', 'bg-white', 'rounded-xl', 'shadow-md', 'overflow-hidden', 'cursor-pointer');
+                card.dataset.id = destination.id;
+
+                card.innerHTML = `
+                    <img src="${destination.image}" alt="${destination.name}" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-semibold text-blue-700 truncate mb-1">${destination.name}</h3>
+                        <p class="text-gray-600 text-sm line-clamp-2 mb-2">${destination.description}</p>
+                        <p class="text-green-600 text-lg font-bold">From $${destination.price}</p>
+                    </div>
+                `;
+                destinationGrid.appendChild(card);
+            });
+        }
+
+        // Event listener for opening the modal
+        destinationGrid.addEventListener('click', (event) => {
+            const clickedCard = event.target.closest('.destination-card');
+            if (clickedCard) {
+                const destinationId = parseInt(clickedCard.dataset.id);
+                const destination = destinations.find(d => d.id === destinationId);
+
+                if (destination) {
+                    modalImage.src = destination.image;
+                    modalImage.alt = destination.name;
+                    modalTitle.textContent = destination.name;
+                    modalDescription.textContent = destination.description;
+                    modalPrice.textContent = `Starting from: $${destination.price}`;
+                    destinationModal.style.display = 'flex'; // Show modal
+                }
+            }
+        });
+
+        // Event listener for closing the modal
+        closeButton.addEventListener('click', () => {
+            destinationModal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (event) => {
+            if (event.target === destinationModal) {
+                destinationModal.style.display = 'none';
+            }
+        });
+
+        // --- Dynamic Travel Calendar Logic ---
+        const calendarDaysGrid = document.getElementById('calendar-days-grid');
+        const currentMonthYearDisplay = document.getElementById('current-month-year');
+        const prevMonthBtn = document.getElementById('prev-month-btn');
+        const nextMonthBtn = document.getElementById('next-month-btn');
+
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+
+        // Dummy events for demonstration
+        const travelEvents = {
+            // Format: YYYY-MM-DD
+            '2025-07-15': 'Summer Adventure Tour',
+            '2025-07-28': 'Europe Explorer Group',
+            '2025-08-10': 'Asia Discovery Trip',
+            '2025-09-05': 'Autumn Foliage Tour',
+            '2025-09-20': 'Desert Safari Expedition'
+        };
+
+        /**
+         * Renders the calendar for the given month and year.
+         * @param {number} month - The month (0-11).
+         * @param {number} year - The full year.
+         */
+        function renderCalendar(month, year) {
+            calendarDaysGrid.innerHTML = ''; // Clear previous days
+
+            const firstDayOfMonth = new Date(year, month, 1).getDay(); // 0 for Sunday, 1 for Monday, etc.
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+            const todayDate = today.getDate();
+            const todayMonth = today.getMonth();
+            const todayYear = today.getFullYear();
+
+            currentMonthYearDisplay.textContent = new Date(year, month).toLocaleString('en-US', { month: 'long', year: 'numeric' });
+
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < firstDayOfMonth; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.classList.add('calendar-day', 'other-month');
+                calendarDaysGrid.appendChild(emptyDay);
+            }
+
+            // Add days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('calendar-day', 'current-month');
+                dayElement.textContent = day;
+
+                // Check for today's date
+                if (day === todayDate && month === todayMonth && year === todayYear) {
+                    dayElement.classList.add('today');
+                }
+
+                // Check for events
+                const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                if (travelEvents[dateString]) {
+                    dayElement.classList.add('event');
+                    dayElement.title = travelEvents[dateString]; // Show event on hover
+                }
+
+                calendarDaysGrid.appendChild(dayElement);
+            }
+        }
+
+        // Event listeners for month navigation
+        prevMonthBtn.addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar(currentMonth, currentYear);
+        });
+
+        nextMonthBtn.addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar(currentMonth, currentYear);
+        });
+
+        // --- FAQ Accordion Logic ---
+        const faqs = [
+            {
+                question: "How do I book a tour with TripLite?",
+                answer: "You can browse our popular destinations, select a tour that fits your preferences, and follow the booking instructions provided on the destination's page. Our team will guide you through the process."
+            },
+            {
+                question: "What types of tours do you offer?",
+                answer: "TripLite specializes in budget-friendly tours to popular destinations worldwide. We offer a variety of experiences including cultural tours, adventure trips, relaxing getaways, and more. Check our catalog for details."
+            },
+            {
+                question: "Are flights included in the tour price?",
+                answer: "Our tour prices typically cover accommodation, local transportation, and guided activities as specified in the tour description. Flights are usually separate to allow flexibility, but we can help you find good deals."
+            },
+            {
+                question: "Can I customize a tour?",
+                answer: "While our tours are curated for the best budget and experience, we understand individual needs. Please contact our support team to discuss potential customization options for group bookings or special requests."
+            },
+            {
+                question: "What is your cancellation policy?",
+                answer: "Our cancellation policy varies depending on the tour and time of cancellation. Please refer to the specific tour's terms and conditions or contact our customer service for detailed information."
+            }
+        ];
+
+        const faqContainer = document.getElementById('faq-container');
+
+        /**
+         * Renders the FAQ accordion items.
+         */
+        function renderFaqs() {
+            faqContainer.innerHTML = ''; // Clear existing FAQs
+            faqs.forEach((faq, index) => {
+                const faqItem = document.createElement('div');
+                faqItem.classList.add('mb-4', 'bg-white', 'rounded-xl', 'shadow-md', 'overflow-hidden');
+
+                const button = document.createElement('button');
+                button.classList.add('flex', 'justify-between', 'items-center', 'w-full', 'p-6', 'text-xl', 'font-semibold', 'text-left', 'text-blue-700', 'hover:bg-gray-50', 'focus:outline-none', 'transition-colors');
+                button.innerHTML = `
+                    <span>${faq.question}</span>
+                    <span class="transform transition-transform duration-300">
+                        <svg class="w-6 h-6 rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </span>
+                `;
+                faqItem.appendChild(button);
+
+                const contentDiv = document.createElement('div');
+                contentDiv.classList.add('accordion-content');
+                contentDiv.innerHTML = `
+                    <p class="text-gray-600 text-lg border-t border-gray-200 pt-4">${faq.answer}</p>
+                `;
+                faqItem.appendChild(contentDiv);
+
+                button.addEventListener('click', () => {
+                    const isOpen = contentDiv.classList.contains('open');
+
+                    // Close all other open accordions
+                    document.querySelectorAll('.accordion-content.open').forEach(openContent => {
+                        openContent.classList.remove('open');
+                        openContent.previousElementSibling.querySelector('svg').classList.remove('rotate-180');
+                    });
+
+                    // Toggle current accordion
+                    if (!isOpen) {
+                        contentDiv.classList.add('open');
+                        button.querySelector('svg').classList.add('rotate-180');
+                    }
+                });
+
+                faqContainer.appendChild(faqItem);
+            });
+        }
+
+        // --- Initial Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDestinations();
+            renderCalendar(currentMonth, currentYear);
+            renderFaqs();
+        });
+    </script>
+</body>
+</html>
